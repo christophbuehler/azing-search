@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Azing Search With Float</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: 'Open Sans';
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        padding: 16px;
+        text-align: right;
+        box-shadow: 0 1px 3px #ededed, 0 1px 2px #ededed;
+      }
+
+      .search {
+        display: flex;
+        overflow: hidden;
+        background-color: #ededed;
+        border-radius: 40px;
+        width: 320px;
+        float: right;
+        box-sizing: border-box;
+        transition: width 0.2s ease;
+      }
+
+      .search:focus-within {
+        width: 480px;
+      }
+
+      .abort-btn {
+        display: none;
+        vertical-align: top;
+        line-height: 42px;
+        height: 42px;
+        width: 42px;
+        text-align: center;
+        cursor: pointer;
+        font-family: 'Material Icons';
+        flex: 0 0 42px;
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      .abort-btn:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      input {
+        flex: 1 1;
+        font-family: 'Open Sans';
+        box-sizing: border-box;
+        border: none;
+        line-height: 42px;
+        height: 42px;
+        padding: 0 16px;
+        background-color: transparent;
+        outline: none;
+      }
+    </style>
+
+    <script src="https://azing.org/app/scripts/core-libs/live/angular-core.js"></script>
+    <script src="https://azing.org/app/scripts/activity/staging/main.js"></script>
+    <script src="https://azing.org/app/scripts/activity/staging/styles.js"></script>
+
+    <script src="./dist/azing-search.min.js"></script>
+    <script src="./float.min.js"></script>
+    <script src="./floaters.min.js"></script>
+    <script>
+      window.onload = () => {
+        const tenant = '2sic'
+        const folderShortId = 'gyrR1a4B'
+        const folderName = 'My folder name'
+        const urls = {
+          searchInFolder: needle =>
+            `https://azing.org/api/catalog/live/${tenant}/search/${needle}%20within:${folderShortId}?p=1`,
+          searchInTenant: needle =>
+            `https://azing.org/api/catalog/live/${tenant}/search/${needle}?p=1`,
+          getPreview: ({ ShortId }) =>
+            `https://azing.org/api/catalog/live/${tenant}/browse/${ShortId}`,
+        }
+
+        const resultCount = 16
+        const abortBtn = document.querySelector('.abort-btn')
+        const search = document.querySelector('.search')
+        const text = document.querySelector('input')
+        const azSearch = azingSearch(search, resultCount, urls)
+
+        abortBtn.addEventListener('click', () => {
+          text.value = ''
+          azSearch.update('')
+          azSearch.hide()
+          abortBtn.style.display = 'none'
+        })
+
+        text.addEventListener('focus', ev => {
+          azSearch.floater.boxComponent.reposition()
+          azSearch.show()
+        })
+
+        text.addEventListener('blur', ev => {
+          azSearch.hide()
+        })
+
+        text.addEventListener('keyup', () => {
+          const val = text.value
+          abortBtn.style.display = val === '' ? 'none' : 'inline-block'
+          azSearch.update(val)
+          if (!azSearch.visible) {
+            azSearch.show()
+          }
+        })
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="search">
+        <input type="text" placeholder="Search Recipes" />
+        <div class="abort-btn">close</div>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+  </body>
+</html>

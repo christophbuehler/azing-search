@@ -1,0 +1,13 @@
+:host {
+    display: block;
+    width: 396px;
+    font-size: 0.8em;
+    opacity: .8;
+    cursor: pointer;
+    height: 437px;
+    overflow: hidden;
+
+    &:hover {
+        opacity: 1;
+    }
+}

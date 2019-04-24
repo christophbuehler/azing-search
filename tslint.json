@@ -1,0 +1,28 @@
+{
+  "extends": "tslint:latest",
+  "rules": {
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "no-implicit-dependencies": true,
+    "no-submodule-imports": false,
+    "no-console": false,
+    "interface-name": false,
+    "no-consecutive-blank-lines": true,
+    "no-unnecessary-type-assertion": true,
+    "no-parameter-reassignment": true,
+    "member-access": [true, "no-public"],
+    "triple-equals": true,
+    "member-ordering": [true, {
+      "order": "fields-first"
+    }],
+    "trailing-comma": [true, {
+      "multiline": "always",
+      "singleline": "never"
+    }],
+    "newline-per-chained-call": true,
+    "curly": true,
+    "object-literal-sort-keys": false
+  }
+}
