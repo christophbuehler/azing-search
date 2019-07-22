@@ -24,6 +24,7 @@ export class SearchRecipePreviewComponent extends HTMLElement {
   }
 
   connectedCallback() {
+
     // Append content to light dom!
     Object.assign(this.contentEl.style, {
       pointerEvents: 'none',
